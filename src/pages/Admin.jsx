@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     HiPlus,
     HiPencilSquare,
@@ -8,9 +9,13 @@ import {
     HiAcademicCap,
     HiChevronDown,
     HiChevronUp,
+    HiShieldExclamation,
 } from 'react-icons/hi2';
+import { useAuth } from '../context/AuthContext';
 import { getAllQuestions, saveQuestions } from '../data/questions';
 import './Admin.css';
+
+const ADMIN_EMAIL = 'ak.anumanchipalle@gmail.com';
 
 const emptyQuestion = {
     question: '',
@@ -19,9 +24,11 @@ const emptyQuestion = {
 };
 
 export default function Admin() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const [allQuestions, setAllQuestions] = useState({});
     const [selectedSubject, setSelectedSubject] = useState('');
-    const [editingQuestion, setEditingQuestion] = useState(null); // index or 'new'
+    const [editingQuestion, setEditingQuestion] = useState(null);
     const [formData, setFormData] = useState({ ...emptyQuestion });
     const [newSubject, setNewSubject] = useState('');
     const [showNewSubject, setShowNewSubject] = useState(false);
@@ -30,6 +37,26 @@ export default function Admin() {
     useEffect(() => {
         setAllQuestions(getAllQuestions());
     }, []);
+
+    // Admin access guard
+    if (!user || user.email !== ADMIN_EMAIL) {
+        return (
+            <div className="admin-page page-wrapper">
+                <div className="container admin-container">
+                    <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
+                        <HiShieldExclamation style={{ fontSize: '3rem', color: 'var(--danger)', marginBottom: '1rem' }} />
+                        <h2 style={{ marginBottom: '0.5rem' }}>Access Denied</h2>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                            You don't have permission to access the admin panel.
+                        </p>
+                        <button className="btn btn-primary" onClick={() => navigate('/')}>
+                            Go Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const subjects = Object.keys(allQuestions);
 

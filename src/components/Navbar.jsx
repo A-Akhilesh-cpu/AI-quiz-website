@@ -49,14 +49,16 @@ export default function Navbar({ darkMode, setDarkMode }) {
                         <HiOutlineTrophy />
                         <span>Leaderboard</span>
                     </Link>
-                    <Link
-                        to="/admin"
-                        className={`nav-link ${isActive('/admin') ? 'active' : ''}`}
-                        onClick={() => setMobileOpen(false)}
-                    >
-                        <HiOutlineCog6Tooth />
-                        <span>Admin</span>
-                    </Link>
+                    {user?.email === 'ak.anumanchipalle@gmail.com' && (
+                        <Link
+                            to="/admin"
+                            className={`nav-link ${isActive('/admin') ? 'active' : ''}`}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            <HiOutlineCog6Tooth />
+                            <span>Admin</span>
+                        </Link>
+                    )}
 
                     {user ? (
                         <Link
