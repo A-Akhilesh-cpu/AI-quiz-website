@@ -1,0 +1,86 @@
+.lifelines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lifelines-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.lifelines-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lifeline-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    border: 1.5px solid var(--border-light);
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+    min-width: 56px;
+}
+
+.lifeline-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(108, 99, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.lifeline-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.lifeline-btn.used {
+    opacity: 0.35;
+    background: var(--surface-3);
+    text-decoration: line-through;
+}
+
+.lifeline-btn:disabled {
+    cursor: not-allowed;
+}
+
+.lifeline-icon {
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+}
+
+.lifeline-btn.used .lifeline-icon {
+    color: var(--text-muted);
+}
+
+.lifeline-name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 480px) {
+    .lifeline-btn {
+        min-width: 48px;
+        padding: 0.4rem 0.5rem;
+    }
+
+    .lifeline-icon {
+        font-size: 0.95rem;
+    }
+
+    .lifeline-name {
+        font-size: 0.65rem;
+    }
+}

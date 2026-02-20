@@ -1,0 +1,99 @@
+.streak-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    animation: streakPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+}
+
+@keyframes streakPop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fireGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(255, 107, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
+    }
+}
+
+@keyframes infernoShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-2px) rotate(-1deg);
+    }
+
+    75% {
+        transform: translateX(2px) rotate(1deg);
+    }
+}
+
+.streak-counter.warm {
+    background: rgba(108, 99, 255, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.streak-counter.hot {
+    background: rgba(255, 170, 0, 0.12);
+    color: #E67E00;
+    border: 1px solid rgba(255, 170, 0, 0.25);
+    animation: streakPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), fireGlow 2s ease-in-out infinite;
+}
+
+.streak-counter.fire {
+    background: rgba(255, 107, 0, 0.15);
+    color: #FF4500;
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    animation: streakPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), fireGlow 1.5s ease-in-out infinite;
+}
+
+.streak-counter.inferno {
+    background: linear-gradient(135deg, rgba(255, 50, 0, 0.18), rgba(255, 180, 0, 0.18));
+    color: #FF2200;
+    border: 1px solid rgba(255, 50, 0, 0.35);
+    animation: streakPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), infernoShake 0.3s ease-in-out infinite, fireGlow 1s ease-in-out infinite;
+}
+
+.streak-emojis {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.streak-number {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.streak-label {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+}
