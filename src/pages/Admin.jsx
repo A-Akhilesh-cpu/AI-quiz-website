@@ -38,24 +38,15 @@ export default function Admin() {
         setAllQuestions(getAllQuestions());
     }, []);
 
-    // Admin access guard
+    // Admin access guard — redirect non-admin users immediately
+    useEffect(() => {
+        if (!user || user.email !== ADMIN_EMAIL) {
+            navigate('/', { replace: true });
+        }
+    }, [user, navigate]);
+
     if (!user || user.email !== ADMIN_EMAIL) {
-        return (
-            <div className="admin-page page-wrapper">
-                <div className="container admin-container">
-                    <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
-                        <HiShieldExclamation style={{ fontSize: '3rem', color: 'var(--danger)', marginBottom: '1rem' }} />
-                        <h2 style={{ marginBottom: '0.5rem' }}>Access Denied</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                            You don't have permission to access the admin panel.
-                        </p>
-                        <button className="btn btn-primary" onClick={() => navigate('/')}>
-                            Go Home
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     const subjects = Object.keys(allQuestions);
