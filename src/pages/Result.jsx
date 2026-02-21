@@ -74,7 +74,7 @@ export default function Result() {
                 correctAnswer: q.correctAnswer,
                 explanation: q.explanation || null,
             }));
-            const answersData = [...state.answers];
+            const answersData = { ...state.answers };
 
             saveToLeaderboard(score, {
                 id: resultId,

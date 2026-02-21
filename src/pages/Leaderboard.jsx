@@ -17,13 +17,15 @@ export default function Leaderboard() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const stored = localStorage.getItem('brainsparkLeaderboard');
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            // Sort by percentage descending
-            parsed.sort((a, b) => b.percentage - a.percentage);
-            setEntries(parsed);
-        }
+        try {
+            const stored = localStorage.getItem('brainsparkLeaderboard');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Sort by percentage descending
+                parsed.sort((a, b) => b.percentage - a.percentage);
+                setEntries(parsed);
+            }
+        } catch { /* ignore corrupted data */ }
     }, []);
 
     const clearLeaderboard = () => {

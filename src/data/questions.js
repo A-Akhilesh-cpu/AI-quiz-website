@@ -50,30 +50,37 @@ const defaultQuestions = {
 };
 
 export function getQuestionsBySubject(subject) {
-    const stored = localStorage.getItem('quizQuestions');
-    if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed[subject] && parsed[subject].length > 0) {
-            return parsed[subject];
+    try {
+        const stored = localStorage.getItem('quizQuestions');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed[subject] && parsed[subject].length > 0) {
+                return parsed[subject];
+            }
         }
-    }
+    } catch { /* ignore corrupted data */ }
     return defaultQuestions[subject] || [];
 }
 
 export function getSubjects() {
-    const stored = localStorage.getItem('quizQuestions');
-    const storedSubjects = stored ? Object.keys(JSON.parse(stored)) : [];
+    let storedSubjects = [];
+    try {
+        const stored = localStorage.getItem('quizQuestions');
+        storedSubjects = stored ? Object.keys(JSON.parse(stored)) : [];
+    } catch { /* ignore */ }
     const defaultSubjects = Object.keys(defaultQuestions);
     return [...new Set([...defaultSubjects, ...storedSubjects])];
 }
 
 export function getAllQuestions() {
-    const stored = localStorage.getItem('quizQuestions');
-    const storedQuestions = stored ? JSON.parse(stored) : {};
     const merged = { ...defaultQuestions };
-    for (const subject in storedQuestions) {
-        merged[subject] = storedQuestions[subject];
-    }
+    try {
+        const stored = localStorage.getItem('quizQuestions');
+        const storedQuestions = stored ? JSON.parse(stored) : {};
+        for (const subject in storedQuestions) {
+            merged[subject] = storedQuestions[subject];
+        }
+    } catch { /* ignore */ }
     return merged;
 }
 

@@ -7,8 +7,12 @@ function generateId() {
 }
 
 function getUsers() {
-    const stored = localStorage.getItem('brainspark_users');
-    return stored ? JSON.parse(stored) : [];
+    try {
+        const stored = localStorage.getItem('brainspark_users');
+        return stored ? JSON.parse(stored) : [];
+    } catch {
+        return [];
+    }
 }
 
 function saveUsers(users) {
@@ -16,8 +20,12 @@ function saveUsers(users) {
 }
 
 function getUserHistory(userId) {
-    const stored = localStorage.getItem(`brainspark_history_${userId}`);
-    return stored ? JSON.parse(stored) : [];
+    try {
+        const stored = localStorage.getItem(`brainspark_history_${userId}`);
+        return stored ? JSON.parse(stored) : [];
+    } catch {
+        return [];
+    }
 }
 
 function saveUserHistory(userId, history) {
@@ -26,8 +34,13 @@ function saveUserHistory(userId, history) {
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
-        const stored = localStorage.getItem('brainspark_currentUser');
-        return stored ? JSON.parse(stored) : null;
+        try {
+            const stored = localStorage.getItem('brainspark_currentUser');
+            return stored ? JSON.parse(stored) : null;
+        } catch {
+            localStorage.removeItem('brainspark_currentUser');
+            return null;
+        }
     });
 
     useEffect(() => {
