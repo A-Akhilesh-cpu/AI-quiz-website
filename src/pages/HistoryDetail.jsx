@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
     HiCheckCircle,
@@ -16,10 +16,13 @@ const difficultyEmoji = { easy: '🌱', medium: '⚡', hard: '🔥' };
 export default function HistoryDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const { getHistory } = useAuth();
 
     const history = getHistory();
-    const entry = history.find(h => h.id === id);
+    const historyEntry = history.find(h => h.id === id);
+    // Fallback to leaderboard entry passed via router state
+    const entry = historyEntry || location.state?.entry;
 
     if (!entry || !entry.questions) {
         return (
@@ -49,8 +52,8 @@ export default function HistoryDetail() {
             <div className="container detail-container">
                 {/* Back + Summary Header */}
                 <div className="detail-header animate-scale-in">
-                    <button className="back-btn" onClick={() => navigate('/profile')}>
-                        <HiArrowLeft /> Back to Profile
+                    <button className="back-btn" onClick={() => navigate(location.state?.fromLeaderboard ? '/leaderboard' : '/profile')}>
+                        <HiArrowLeft /> {location.state?.fromLeaderboard ? 'Back to Leaderboard' : 'Back to Profile'}
                     </button>
 
                     <div className="detail-summary glass-card">

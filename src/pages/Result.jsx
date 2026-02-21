@@ -67,10 +67,23 @@ export default function Result() {
         }
         if (!savedRef.current) {
             savedRef.current = true;
-            saveToLeaderboard(score);
+            const resultId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            const questionData = questions.map(q => ({
+                question: q.question,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+                explanation: q.explanation || null,
+            }));
+            const answersData = [...state.answers];
+
+            saveToLeaderboard(score, {
+                id: resultId,
+                questions: questionData,
+                answers: answersData,
+            });
             if (user) {
                 updateUserStats({
-                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    id: resultId,
                     subject: state.subject || state.customTopic,
                     isAI: state.isAI,
                     difficulty: state.difficulty,
@@ -79,13 +92,8 @@ export default function Result() {
                     total: score.total,
                     maxStreak: score.maxStreak,
                     date: new Date().toISOString(),
-                    questions: questions.map(q => ({
-                        question: q.question,
-                        options: q.options,
-                        correctAnswer: q.correctAnswer,
-                        explanation: q.explanation || null,
-                    })),
-                    answers: [...state.answers],
+                    questions: questionData,
+                    answers: answersData,
                 });
             }
         }

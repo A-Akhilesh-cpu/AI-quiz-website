@@ -202,3 +202,22 @@
         font-size: 1rem;
     }
 }
+
+/* Clickable entries */
+.leaderboard-row.clickable:hover {
+    transform: translateX(6px);
+    box-shadow: 0 4px 16px rgba(108, 99, 255, 0.12);
+}
+
+.leaderboard-arrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.leaderboard-row.clickable:hover .leaderboard-arrow {
+    opacity: 1;
+}

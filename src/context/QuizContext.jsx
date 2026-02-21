@@ -184,8 +184,9 @@ export function QuizProvider({ children }) {
     };
 
     // Save to leaderboard
-    const saveToLeaderboard = (score) => {
+    const saveToLeaderboard = (score, extraData = {}) => {
         const entry = {
+            id: extraData.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 6)),
             subject: state.subject || state.customTopic,
             isAI: state.isAI,
             difficulty: state.difficulty,
@@ -194,6 +195,8 @@ export function QuizProvider({ children }) {
             total: score.total,
             maxStreak: score.maxStreak,
             date: new Date().toISOString(),
+            questions: extraData.questions || null,
+            answers: extraData.answers || null,
         };
 
         const stored = localStorage.getItem('brainsparkLeaderboard');

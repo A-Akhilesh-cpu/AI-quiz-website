@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HiTrophy, HiTrash, HiFire } from 'react-icons/hi2';
 import './Leaderboard.css';
 
@@ -13,6 +14,7 @@ function getRankBadge(index) {
 
 export default function Leaderboard() {
     const [entries, setEntries] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const stored = localStorage.getItem('brainsparkLeaderboard');
@@ -34,6 +36,12 @@ export default function Leaderboard() {
     const formatDate = (iso) => {
         const d = new Date(iso);
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
+    const handleEntryClick = (entry) => {
+        if (entry.id && entry.questions) {
+            navigate(`/history/${entry.id}`, { state: { fromLeaderboard: true, entry } });
+        }
     };
 
     return (
@@ -63,11 +71,15 @@ export default function Leaderboard() {
                     <div className="leaderboard-list">
                         {entries.map((entry, index) => {
                             const rank = getRankBadge(index);
+                            const isClickable = entry.id && entry.questions;
                             return (
                                 <div
                                     key={index}
-                                    className={`leaderboard-row glass-card animate-slide-up ${rank.class}`}
-                                    style={{ animationDelay: `${index * 0.05}s` }}
+                                    className={`leaderboard-row glass-card animate-slide-up ${rank.class} ${isClickable ? 'clickable' : ''}`}
+                                    style={{ animationDelay: `${index * 0.05}s`, cursor: isClickable ? 'pointer' : 'default' }}
+                                    onClick={() => handleEntryClick(entry)}
+                                    role={isClickable ? 'button' : undefined}
+                                    tabIndex={isClickable ? 0 : undefined}
                                 >
                                     <div className="rank-cell">
                                         <span className={`rank-badge ${rank.class}`}>{rank.emoji}</span>
@@ -98,6 +110,9 @@ export default function Leaderboard() {
                                             </div>
                                         )}
                                     </div>
+                                    {isClickable && (
+                                        <span className="leaderboard-arrow">View →</span>
+                                    )}
                                 </div>
                             );
                         })}
